@@ -29,7 +29,9 @@ public class Listener implements Runnable {
             ServerReceiver receiver = new ServerReceiver(++counter, socket);
             consoleReader.add(receiver);
             Thread receiverThread = new Thread(receiver);
+            Thread receiverThread2 = new Thread(receiver);
             receiverThread.start();
+            receiverThread2.start();
         } catch (IOException e) {
             LOGGER.error("error on new Thread", e);
         }
