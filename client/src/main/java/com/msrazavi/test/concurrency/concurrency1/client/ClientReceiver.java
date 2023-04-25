@@ -19,9 +19,9 @@ public record ClientReceiver(Socket socket) implements Runnable {
         LOGGER.info("receiver started");
         try (DataInputStream inputStream = new DataInputStream(socket.getInputStream())) {
             while (!this.socket.isClosed()) {
-                LOGGER.info("wait for Message from server");
+                LOGGER.info("wait for Message from server...");
                 String message = inputStream.readUTF();
-                LOGGER.info("receive Message: {}", message);
+                LOGGER.info("Message received from server: {}", message);
             }
         } catch (IOException e) {
             LOGGER.error("error on Receiver", e);

@@ -38,7 +38,7 @@ public class ConsoleReader implements Runnable {
         String inputText = "start";
         try {
             while (!inputText.equals("exit")) {
-                LOGGER.info("Waiting for the client message");
+                LOGGER.info("waiting for the input message (for send to client first enter its id; exit)");
                 final String line = this.bufferedReader.readLine();
                 final String[] split = line.split(" ");
                 if (split.length == 2) {

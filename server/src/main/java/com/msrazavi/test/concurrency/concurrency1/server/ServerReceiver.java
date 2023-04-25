@@ -27,12 +27,12 @@ public class ServerReceiver implements Runnable, ConsoleReader.ConsoleObserver {
     @Override
     public void run() {
         LOGGER.info("receiver started");
-        write("Welcome, Your Id = " + this.id);
+        write("{id: " + this.id + "}");
         String message = "";
         try {
             while (!message.equals("exit")) {
                 message = inputStream.readUTF();
-                LOGGER.info("Message Received: {}", message);
+                LOGGER.info("Message Received: {} (id: {})", message, this.id);
                 write("Receive Message with Length: " + message.length());
             }
         } catch (IOException e) {

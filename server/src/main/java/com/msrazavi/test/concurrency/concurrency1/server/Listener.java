@@ -39,7 +39,7 @@ public class Listener implements Runnable {
     public void run() {
         while (isContinue) {
             try {
-                LOGGER.info("Waiting for the client request");
+                LOGGER.info("Waiting for the client connect");
                 Socket socket = this.server.accept();
                 startThread(socket);
             } catch (IOException e) {
