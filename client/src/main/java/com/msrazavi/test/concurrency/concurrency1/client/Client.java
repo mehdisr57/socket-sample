@@ -17,10 +17,13 @@ public class Client {
     public void start(int port) throws IOException {
         InetAddress host = InetAddress.getLocalHost();
         try (Socket socket = new Socket(host.getHostName(), port)) {
-            final Thread receiverThread = new Thread(new ClientReceiver(socket));
+            final ClientReceiver clientReceiver = new ClientReceiver(socket);
+            final Thread receiverThread = new Thread(clientReceiver);
+            final Thread receiverThread2 = new Thread(clientReceiver);
             receiverThread.setDaemon(true);
             final Thread senderThread = new Thread(new ClientSender(socket));
             receiverThread.start();
+            receiverThread2.start();
             senderThread.start();
             senderThread.join();
         } catch (InterruptedException e) {
