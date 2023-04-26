@@ -14,7 +14,7 @@ public class ServerMain {
             final int port = 5872;
             final ConsoleReader consoleReader = new ConsoleReader();
             final Thread t1 = new Thread(consoleReader);
-            Listener listener = new Listener(port, consoleReader);
+            Listener listener = new Listener(port);
             final Thread t2 = new Thread(listener);
             t1.start();
             t2.start();

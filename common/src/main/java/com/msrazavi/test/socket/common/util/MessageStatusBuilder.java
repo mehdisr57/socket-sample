@@ -1,6 +1,5 @@
 package com.msrazavi.test.socket.common.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.msrazavi.test.socket.common.model.Message;
 import com.msrazavi.test.socket.common.model.MessageStatus;
 import com.msrazavi.test.socket.common.model.State;
@@ -11,17 +10,22 @@ public final class MessageStatusBuilder {
     private MessageStatusBuilder() {
     }
 
-    public static String ofSentToServer(String to, String text) throws JsonProcessingException {
+    public static MessageStatus ofSentToServer(String to, String text) {
         final Message message = new Message(to, text);
         final Status status = new Status(State.SENT_TO_SERVER);
-        final MessageStatus messageStatus = new MessageStatus(message, status);
-        return JsonUtil.instance().serialize(messageStatus);
+        return new MessageStatus(message, status);
     }
 
-    public static String ofInServer(String from, MessageStatus messageStatus) throws JsonProcessingException {
+    public static MessageStatus ofInServer(String from, MessageStatus messageStatus) {
         final Status status = new Status(State.IN_SERVER);
         messageStatus.changeStatus(status);
         messageStatus.getMessage().setFrom(from);
-        return JsonUtil.instance().serialize(messageStatus);
+        return messageStatus;
+    }
+
+    public static MessageStatus ofSentToReceiver(MessageStatus messageStatus) {
+        final Status status = new Status(State.SENT_TO_RECEIVER);
+        messageStatus.changeStatus(status);
+        return messageStatus;
     }
 }

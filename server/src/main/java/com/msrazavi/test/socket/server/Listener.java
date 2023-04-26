@@ -10,14 +10,12 @@ import java.net.Socket;
 public class Listener implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
-    private int counter = 1;
+    private int counter = 0;
     private final ServerSocket server;
-    private final ConsoleReader consoleReader;
     private boolean isContinue = true;
 
-    public Listener(int port, ConsoleReader consoleReader) throws IOException {
+    public Listener(int port) throws IOException {
         this.server = new ServerSocket(port);
-        this.consoleReader = consoleReader;
     }
 
     public void stop() {
@@ -26,9 +24,10 @@ public class Listener implements Runnable {
 
     private void startThread(Socket socket) {
         try {
-            ServerReceiver receiver = new ServerReceiver(++counter, socket);
-            consoleReader.add(receiver);
-            Thread receiverThread = new Thread(receiver);
+            final int id = counter++ + 1;
+            Channel channel = new Channel(id, socket);
+            ChannelRepository.instance().put(String.valueOf(id), channel);
+            Thread receiverThread = new Thread(channel);
             receiverThread.start();
         } catch (IOException e) {
             LOGGER.error("error on new Thread", e);

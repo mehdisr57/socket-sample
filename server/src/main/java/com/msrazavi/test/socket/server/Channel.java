@@ -16,14 +16,14 @@ import java.util.Optional;
 /**
  * @author M_SadatRazavi
  */
-public class ServerReceiver implements Runnable, ConsoleReader.ConsoleObserver {
+public class Channel implements Runnable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServerReceiver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Channel.class);
     private final int id;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
 
-    public ServerReceiver(int id, Socket socket) throws IOException {
+    public Channel(int id, Socket socket) throws IOException {
         this.id = id;
         this.inputStream = new DataInputStream(socket.getInputStream());
         this.outputStream = new DataOutputStream(socket.getOutputStream());
@@ -42,7 +42,12 @@ public class ServerReceiver implements Runnable, ConsoleReader.ConsoleObserver {
                 if (messageStatus.isEmpty()) {
                     write("Receive Message with Length: " + message.length());
                 } else {
-                    write(MessageStatusBuilder.ofInServer(String.valueOf(this.id), messageStatus.get()));
+                    final MessageStatus sentMessage = MessageStatusBuilder.ofInServer(String.valueOf(this.id), messageStatus.get());
+                    write(sentMessage);
+                    ChannelRepository.instance().get(sentMessage.getMessage().getTo()).ifPresent(channel -> {
+                        MessageStatus sentToReceiver = MessageStatusBuilder.ofSentToReceiver(sentMessage);
+                        channel.write(sentToReceiver);
+                    });
                 }
             }
         } catch (IOException e) {
@@ -69,13 +74,17 @@ public class ServerReceiver implements Runnable, ConsoleReader.ConsoleObserver {
         }
     }
 
-    @Override
-    public int getId() {
-        return this.id;
+    private void write(MessageStatus message) {
+        try {
+            final String json = JsonUtil.instance().serialize(message);
+            outputStream.writeUTF(json);
+            outputStream.flush();
+        } catch (IOException e) {
+            LOGGER.error("error on write (id: " + id + ")", e);
+        }
     }
 
-    @Override
-    public void accept(String message) {
+    public void sendMessage(String message) {
         write(message);
     }
 }

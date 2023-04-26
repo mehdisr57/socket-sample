@@ -1,5 +1,6 @@
 package com.msrazavi.test.socket.client;
 
+import com.msrazavi.test.socket.common.util.JsonUtil;
 import com.msrazavi.test.socket.common.util.MessageStatusBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,9 @@ public record ClientSender(Socket socket) implements Runnable {
                 LOGGER.info("Sending request to Socket {} - {}", socket, inputText);
                 final String[] split = inputText.split(" ");
                 if (split.length == 2) {
-                    sendMessage(outputStream, MessageStatusBuilder.ofSentToServer(split[0], split[1]));
+                    sendMessage(outputStream,
+                            JsonUtil.instance().serialize(MessageStatusBuilder.ofSentToServer(split[0], split[1]))
+                    );
                 } else {
                     sendMessage(outputStream, inputText);
                 }
