@@ -1,4 +1,4 @@
-package com.msrazavi.test.concurrency.concurrency1.common.model;
+package com.msrazavi.test.socket.common.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

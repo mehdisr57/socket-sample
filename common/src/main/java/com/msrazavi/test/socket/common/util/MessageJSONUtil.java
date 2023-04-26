@@ -1,7 +1,7 @@
-package com.msrazavi.test.concurrency.concurrency1.common.util;
+package com.msrazavi.test.socket.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.msrazavi.test.concurrency.concurrency1.common.model.Message;
+import com.msrazavi.test.socket.common.model.Message;
 
 import java.time.LocalDateTime;
 

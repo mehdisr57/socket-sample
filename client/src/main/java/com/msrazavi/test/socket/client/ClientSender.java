@@ -1,4 +1,4 @@
-package com.msrazavi.test.concurrency.concurrency1.client;
+package com.msrazavi.test.socket.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

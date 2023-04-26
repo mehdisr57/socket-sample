@@ -20,7 +20,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.msrazavi.test.concurrency.concurrency1.client.ClientMain</mainClass>
+                            <mainClass>com.msrazavi.test.socket.client.ClientMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

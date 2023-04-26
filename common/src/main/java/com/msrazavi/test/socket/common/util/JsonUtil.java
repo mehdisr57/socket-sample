@@ -1,4 +1,4 @@
-package com.msrazavi.test.concurrency.concurrency1.common.util;
+package com.msrazavi.test.socket.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
