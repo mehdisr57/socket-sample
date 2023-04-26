@@ -1,5 +1,6 @@
 package com.msrazavi.test.socket.client;
 
+import com.msrazavi.test.socket.common.util.MessageJSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +26,23 @@ public record ClientSender(Socket socket) implements Runnable {
             while (!inputText.equals("exit")) {
                 inputText = bufferedReader.readLine();
                 LOGGER.info("Sending request to Socket {} - {}", socket, inputText);
-                outputStream.writeUTF(inputText);
+                final String[] split = inputText.split(" ");
+                if (split.length == 2) {
+                    sendMessage(outputStream, MessageJSONUtil.jsonOf("to", inputText));
+                } else {
+                    sendMessage(outputStream, inputText);
+                }
+                outputStream.writeUTF(MessageJSONUtil.jsonOf("to", inputText));
                 outputStream.flush();
             }
         } catch (IOException e) {
             LOGGER.error("error on Sender", e);
         }
         LOGGER.info("ClientSender stopped");
+    }
+
+    private void sendMessage(DataOutputStream outputStream, String message) throws IOException {
+        outputStream.writeUTF(message);
+        outputStream.flush();
     }
 }
