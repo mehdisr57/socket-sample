@@ -55,6 +55,7 @@ public class ServerReceiver implements Runnable, ConsoleReader.ConsoleObserver {
             final MessageStatus messageStatus = JsonUtil.instance().deSerialize(message, MessageStatus.class);
             return Optional.of(messageStatus);
         } catch (JsonProcessingException e) {
+            LOGGER.warn("error on getMessageStatus", e);
             return Optional.empty();
         }
     }

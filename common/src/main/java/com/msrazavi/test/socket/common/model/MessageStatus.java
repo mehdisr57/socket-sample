@@ -1,5 +1,8 @@
 package com.msrazavi.test.socket.common.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +12,8 @@ public class MessageStatus {
     private Status lastStatus;
     private List<Status> history;
 
-    public MessageStatus(Message message) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public MessageStatus(@JsonProperty("message") Message message) {
         this.message = message;
     }
 
