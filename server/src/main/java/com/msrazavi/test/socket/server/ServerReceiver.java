@@ -1,5 +1,9 @@
 package com.msrazavi.test.socket.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.msrazavi.test.socket.common.model.MessageStatus;
+import com.msrazavi.test.socket.common.util.JsonUtil;
+import com.msrazavi.test.socket.common.util.MessageStatusBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +11,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Optional;
 
 /**
  * @author M_SadatRazavi
@@ -33,10 +38,24 @@ public class ServerReceiver implements Runnable, ConsoleReader.ConsoleObserver {
             while (!message.equals("exit")) {
                 message = inputStream.readUTF();
                 LOGGER.info("Message Received: {} (id: {})", message, this.id);
-                write("Receive Message with Length: " + message.length());
+                final Optional<MessageStatus> messageStatus = getMessageStatus(message);
+                if (messageStatus.isEmpty()) {
+                    write("Receive Message with Length: " + message.length());
+                } else {
+                    write(MessageStatusBuilder.ofInServer(String.valueOf(this.id), messageStatus.get()));
+                }
             }
         } catch (IOException e) {
             LOGGER.error("error on read (id: " + id + ")", e);
+        }
+    }
+
+    private Optional<MessageStatus> getMessageStatus(String message) {
+        try {
+            final MessageStatus messageStatus = JsonUtil.instance().deSerialize(message, MessageStatus.class);
+            return Optional.of(messageStatus);
+        } catch (JsonProcessingException e) {
+            return Optional.empty();
         }
     }
 
