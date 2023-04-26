@@ -28,12 +28,10 @@ public record ClientSender(Socket socket) implements Runnable {
                 LOGGER.info("Sending request to Socket {} - {}", socket, inputText);
                 final String[] split = inputText.split(" ");
                 if (split.length == 2) {
-                    sendMessage(outputStream, MessageJSONUtil.jsonOf("to", inputText));
+                    sendMessage(outputStream, MessageJSONUtil.jsonOf(split[0], split[1]));
                 } else {
                     sendMessage(outputStream, inputText);
                 }
-                outputStream.writeUTF(MessageJSONUtil.jsonOf("to", inputText));
-                outputStream.flush();
             }
         } catch (IOException e) {
             LOGGER.error("error on Sender", e);

@@ -14,6 +14,7 @@ public final class MessageJSONUtil {
         final Message message = new Message();
         message.setTo(to);
         message.setText(text);
+        message.setDateTime(LocalDateTime.now());
         return JsonUtil.instance().serialize(message);
     }
 

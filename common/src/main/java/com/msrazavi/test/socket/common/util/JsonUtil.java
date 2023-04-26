@@ -2,6 +2,8 @@ package com.msrazavi.test.socket.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -13,6 +15,8 @@ public class JsonUtil {
 
     private JsonUtil() {
         this.mapper = new ObjectMapper();
+        this.mapper.registerModule(new JavaTimeModule());
+        this.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     public static JsonUtil instance() {
