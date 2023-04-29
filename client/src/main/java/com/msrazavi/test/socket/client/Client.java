@@ -61,7 +61,7 @@ public class Client {
     }
 
     private Optional<Socket> retry(int port, int retry, int maxRetry, ScheduledExecutorService scheduledExecutor) {
-        LOGGER.info("retry to get socket for {} time (max is {})", retry, maxRetry);
+        LOGGER.info("retry to get socket for {} time (max number of attempts is equal to {})", retry, maxRetry);
         try {
             return scheduledExecutor.schedule(() -> this.getSocket(port, retry + 1, maxRetry),
                             2,

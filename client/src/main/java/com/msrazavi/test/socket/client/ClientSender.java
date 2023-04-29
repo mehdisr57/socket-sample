@@ -37,7 +37,7 @@ public record ClientSender(Socket socket) implements Runnable {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("error on Sender", e);
+            LOGGER.error("error in start of ClientSender", e);
         }
         LOGGER.info("ClientSender stopped");
     }
